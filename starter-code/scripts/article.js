@@ -2,16 +2,16 @@
 
 var articles = [];
 
-function Article (title, category, author, authorUrl, publishedOn, body) {
+function Article (opts) {
   // TODO: Use the JS object passed in to complete this constructor function:
   // Save ALL the properties of `opts` into `this`
   // lots of this.someProperty = opts.property
-  this.title = title;
-  this.category = category;
-  this.author = author;
-  this.authorUrl = authorUrl;
-  this.publishedOn = publishedOn;
-  this.body = body;
+  this.title = opts.title;
+  this.category = opts.category;
+  this.author = opts.author;
+  this.authorUrl = opts.authorUrl;
+  this.publishedOn = opts.publishedOn;
+  this.body = opts.body;
 }
 console.log('Article is' + Article);
 Article.prototype.toHtml = function() {
@@ -21,7 +21,7 @@ Article.prototype.toHtml = function() {
   for that before this current article gets rendered to our
   DOM. */
   // one line of code to remove the class that hides the template so that the articles will actually show
-
+  $newArticle.removeClass('template');
   if (!this.publishedOn) $newArticle.addClass('draft');
   $newArticle.data('category', this.category);
 
@@ -35,8 +35,11 @@ Article.prototype.toHtml = function() {
     5. publication date. */
 
     // lots of $newArticle.find...  (look at jQuery $.find docs)
+  $newArticle.find('h1').text(this.title);
+  $newArticle.find('.byline a').text(this.author).attr('href', this.authorUrl);
+  $newArticle.find('.article-body').html(this.body);
 
-    console.log($newArticle);
+  console.log($newArticle);
 
   // Display the date as a relative number of 'days ago'
   $newArticle.find('time').html('about ' + parseInt((new Date() - new Date(this.publishedOn))/60/60/24/1000) + ' days ago');
